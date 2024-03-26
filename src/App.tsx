@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Box, Button, Card, Container, Grid, Typography } from '@mui/material';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { useState } from 'react';
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface ITag {
+  name: string;
+  count: number;
 }
 
-export default App
+function App() {
+  const [tags, setTags] = useState<ITag[] | undefined>();
+
+  const fetchData = async () => {
+    const result = await fetch('https://api.stackexchange.com/2.3/tags?order=desc&sort=popular&site=stackoverflow');
+    const data = await result.json();
+    setTags(data.items);
+
+    console.log(data);
+  };
+
+  return (
+    <Container>
+      <Box display="flex" alignItems="center">
+        <Typography variant="h2">Mediporta</Typography>
+        <Button sx={{ ml: 5, height: '40px' }} variant="contained" onClick={fetchData}>
+          FETCH DATA
+        </Button>
+      </Box>
+      <Grid container spacing={2} sx={{ flexGrow: 1, mt: 2 }}>
+        {tags?.map((tag) => (
+          <Grid item key={tag.name}>
+            <Card sx={{ py: 1, px: 2 }}>
+              <Typography mb={1} color="primary" variant="h5">
+                {tag.name}
+              </Typography>
+              <Typography>Pole count: {tag.count}</Typography>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
+  );
+}
+
+export default App;

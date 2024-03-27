@@ -1,11 +1,7 @@
-import { Box, Button, Card, Container, Grid, Typography } from '@mui/material';
-
+import { Box, Button, Container, Typography } from '@mui/material';
 import { useState } from 'react';
-
-interface ITag {
-  name: string;
-  count: number;
-}
+import TagsTableContainer from './components/TagsTable/TagsTable.container';
+import { ITag } from './types/TagsTable';
 
 function App() {
   const [tags, setTags] = useState<ITag[] | undefined>();
@@ -20,24 +16,19 @@ function App() {
 
   return (
     <Container>
-      <Box display="flex" alignItems="center">
-        <Typography variant="h2">Mediporta</Typography>
-        <Button sx={{ ml: 5, height: '40px' }} variant="contained" onClick={fetchData}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        sx={{ flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'center' } }}
+      >
+        <Typography mt={2} variant="h2">
+          Mediporta
+        </Typography>
+        <Button sx={{ ml: { xs: 0, sm: 5 }, mt: 3.4, height: '40px' }} variant="contained" onClick={fetchData}>
           FETCH DATA
         </Button>
       </Box>
-      <Grid container spacing={2} sx={{ flexGrow: 1, mt: 2 }}>
-        {tags?.map((tag) => (
-          <Grid item key={tag.name}>
-            <Card sx={{ py: 1, px: 2 }}>
-              <Typography mb={1} color="primary" variant="h5">
-                {tag.name}
-              </Typography>
-              <Typography>Pole count: {tag.count}</Typography>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      {tags && <TagsTableContainer tags={tags} />}
     </Container>
   );
 }

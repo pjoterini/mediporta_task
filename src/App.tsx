@@ -1,18 +1,10 @@
 import { Box, Button, Container, Typography } from '@mui/material';
-import { useState } from 'react';
 import TagsTableContainer from './components/TagsTable/TagsTable.container';
-import { ITag } from './types/TagsTable';
+import { useAppDispatch } from './redux/store';
+import { fetchTags } from './redux/tags/actions';
 
 function App() {
-  const [tags, setTags] = useState<ITag[] | undefined>();
-
-  const fetchData = async () => {
-    const result = await fetch('https://api.stackexchange.com/2.3/tags?order=desc&sort=popular&site=stackoverflow');
-    const data = await result.json();
-    setTags(data.items);
-
-    console.log(data);
-  };
+  const dispatch = useAppDispatch();
 
   return (
     <Container>
@@ -24,11 +16,15 @@ function App() {
         <Typography mt={2} variant="h2">
           Mediporta
         </Typography>
-        <Button sx={{ ml: { xs: 0, sm: 5 }, mt: 3.4, height: '40px' }} variant="contained" onClick={fetchData}>
-          FETCH DATA
+        <Button
+          sx={{ ml: { xs: 0, sm: 5 }, mt: 3.4, height: '40px' }}
+          variant="contained"
+          onClick={() => dispatch(fetchTags())}
+        >
+          FETCH TAGS
         </Button>
       </Box>
-      {tags && <TagsTableContainer tags={tags} />}
+      <TagsTableContainer />
     </Container>
   );
 }

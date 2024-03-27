@@ -1,11 +1,10 @@
-import { ITag } from '../../types/TagsTable';
+import { useAppSelector } from '../../redux/store';
+import { selectTags } from '../../redux/tags/selector';
 import TagsTable from './TagsTable.component';
 
-interface IProps {
-  tags: ITag[];
-}
+const TagsTableContainer = () => {
+  const tags = useAppSelector(selectTags);
 
-const TagsTableContainer = ({ tags }: IProps) => {
   return <TagsTable tags={tags} />;
 };
 

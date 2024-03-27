@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Box, Button, Container, Typography } from '@mui/material';
+import { useState } from 'react';
+import TagsTableContainer from './components/TagsTable/TagsTable.container';
+import { ITag } from './types/TagsTable';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tags, setTags] = useState<ITag[] | undefined>();
+
+  const fetchData = async () => {
+    const result = await fetch('https://api.stackexchange.com/2.3/tags?order=desc&sort=popular&site=stackoverflow');
+    const data = await result.json();
+    setTags(data.items);
+
+    console.log(data);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Container>
+      <Box
+        display="flex"
+        justifyContent="center"
+        sx={{ flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'center' } }}
+      >
+        <Typography mt={2} variant="h2">
+          Mediporta
+        </Typography>
+        <Button sx={{ ml: { xs: 0, sm: 5 }, mt: 3.4, height: '40px' }} variant="contained" onClick={fetchData}>
+          FETCH DATA
+        </Button>
+      </Box>
+      {tags && <TagsTableContainer tags={tags} />}
+    </Container>
+  );
 }
 
-export default App
+export default App;

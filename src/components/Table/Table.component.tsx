@@ -1,15 +1,16 @@
-import { Box, CircularProgress, TextField, Typography } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { Status } from '../../redux/enums/status';
-import { useAppSelector } from '../../redux/store';
-import { selectTagsError, selectTagsStatus } from '../../redux/tags/selector';
 import { ITag } from '../../redux/tags/interfaces';
+import StateFailed from '../common/StateFailed';
+import StateLoading from '../common/StateLoading';
 
 interface IProps {
-  tags: ITag[];
+  tags?: ITag[];
+  status: Status;
+  error?: string;
 }
-
 const columns: GridColDef[] = [
   {
     field: 'name',
@@ -19,10 +20,7 @@ const columns: GridColDef[] = [
   { field: 'count', headerName: 'Pole count', width: 140 },
 ];
 
-const TagsTable = ({ tags }: IProps) => {
-  const status = useAppSelector(selectTagsStatus);
-  const error = useAppSelector(selectTagsError);
-
+const Table = ({ tags, status, error }: IProps) => {
   const [paginationModel, setPaginationModel] = useState({
     pageSize: 5,
     page: 0,
@@ -30,16 +28,8 @@ const TagsTable = ({ tags }: IProps) => {
 
   return (
     <Box mt={2} mx="auto" maxWidth="420px">
-      {status === Status.LOADING && (
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <CircularProgress />
-        </Box>
-      )}
-      {status === Status.FAILED && (
-        <Box p={2} display="flex" justifyContent="center" alignItems="center">
-          <Typography color="secondary">{error}</Typography>
-        </Box>
-      )}
+      {status === Status.LOADING && <StateLoading />}
+      {status === Status.FAILED && <StateFailed error={error} />}
       {status === Status.SUCCEEDED && (
         <>
           <Box py={2} display="flex" justifyContent="right" alignItems="center">
@@ -51,7 +41,6 @@ const TagsTable = ({ tags }: IProps) => {
               inputProps={{ type: 'number', max: 10, min: 1, value: paginationModel.pageSize }}
             />
           </Box>
-
           <DataGrid
             rows={tags}
             columns={columns}
@@ -66,4 +55,4 @@ const TagsTable = ({ tags }: IProps) => {
   );
 };
 
-export default TagsTable;
+export default Table;

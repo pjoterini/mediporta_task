@@ -1,12 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchTags = createAsyncThunk('tags/fetchTags', async (_, thunkAPI) => {
+export const fetchTags = createAsyncThunk('tags/fetchTags', async (amount: number, thunkAPI) => {
   try {
+    let numberOfPages = 1;
+    if (amount > 99) {
+      numberOfPages = Math.floor(amount / 100);
+    }
+
     let items = [];
     let currentPage = 1;
     let hasMore = true;
 
-    while (hasMore && currentPage < amount) {
+    while (hasMore && currentPage <= numberOfPages) {
       const result = await fetch(
         `https://api.stackexchange.com/2.3/tags?page=${currentPage}&pagesize=100&order=desc&sort=popular&site=stackoverflow`,
       );

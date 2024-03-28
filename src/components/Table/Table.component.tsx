@@ -1,4 +1,4 @@
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Link, TextField, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { Status } from '../../redux/enums/status';
@@ -7,18 +7,10 @@ import StateFailed from '../common/StateFailed';
 import StateLoading from '../common/StateLoading';
 
 interface IProps {
-  tags?: ITag[];
+  tags: ITag[];
   status: Status;
   error?: string;
 }
-const columns: GridColDef[] = [
-  {
-    field: 'name',
-    headerName: 'Tag',
-    width: 200,
-  },
-  { field: 'count', headerName: 'Pole count', width: 140 },
-];
 
 const Table = ({ tags, status, error }: IProps) => {
   const [paginationModel, setPaginationModel] = useState({
@@ -26,11 +18,36 @@ const Table = ({ tags, status, error }: IProps) => {
     page: 0,
   });
 
+  const columns: GridColDef[] = [
+    {
+      field: 'name',
+      headerName: 'Tag',
+      renderCell: (params) => (
+        <Link
+          target="_blank"
+          rel="noopener"
+          color="secondary"
+          underline="hover"
+          href={`https://stackoverflow.com/questions/tagged/${params.value}`}
+        >
+          {params.value}
+        </Link>
+      ),
+      width: 200,
+    },
+    {
+      field: 'count',
+      headerName: 'Pole count',
+      valueFormatter: (row: number) => row.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+      width: 140,
+    },
+  ];
+
   return (
     <Box mt={2} mx="auto" maxWidth="420px">
       {status === Status.LOADING && <StateLoading />}
       {status === Status.FAILED && <StateFailed error={error} />}
-      {status === Status.SUCCEEDED && (
+      {status === Status.SUCCEEDED && tags && (
         <>
           <Box py={2} display="flex" justifyContent="right" alignItems="center">
             <Typography mr={1}>Rows per page:</Typography>

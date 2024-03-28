@@ -5,7 +5,7 @@ export const fetchTags = createAsyncThunk('tags/fetchTags', async (_, thunkAPI) 
     const result = await fetch('https://api.stackexchange.com/2.3/tags?order=desc&sort=popular&site=stackoverflow');
     const data = await result.json();
 
-    console.log(data);
+    console.log(data.items);
 
     return data.items;
   } catch (err) {

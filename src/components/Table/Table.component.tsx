@@ -1,4 +1,4 @@
-import { Box, Link, TextField, Typography } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { Status } from '../../redux/enums/status';
@@ -7,7 +7,7 @@ import StateFailed from '../common/StateFailed';
 import StateLoading from '../common/StateLoading';
 
 interface IProps {
-  tags: ITag[];
+  tags?: ITag[];
   status: Status;
   error?: string;
 }
@@ -49,15 +49,6 @@ const Table = ({ tags, status, error }: IProps) => {
       {status === Status.FAILED && <StateFailed error={error} />}
       {status === Status.SUCCEEDED && tags && (
         <>
-          <Box py={2} display="flex" justifyContent="right" alignItems="center">
-            <Typography mr={1}>Rows per page:</Typography>
-            <TextField
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setPaginationModel({ pageSize: Number(event.target.value), page: 0 });
-              }}
-              inputProps={{ type: 'number', max: 10, min: 1, value: paginationModel.pageSize }}
-            />
-          </Box>
           <DataGrid
             rows={tags}
             columns={columns}

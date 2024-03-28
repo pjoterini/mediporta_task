@@ -22,7 +22,7 @@ const columns: GridColDef[] = [
 
 const Table = ({ tags, status, error }: IProps) => {
   const [paginationModel, setPaginationModel] = useState({
-    pageSize: 5,
+    pageSize: 10,
     page: 0,
   });
 

@@ -1,6 +1,7 @@
-import { Box, Typography } from '@mui/material';
-import Button from '../common/Button';
+import { AppBar, Box, Toolbar } from '@mui/material';
+import logo from '../../assets/logo.png';
 import { Status } from '../../redux/enums/status';
+import Button from '../common/Button';
 
 interface IProps {
   onClick?: () => void;
@@ -9,15 +10,15 @@ interface IProps {
 
 const Header = ({ onClick, status }: IProps) => {
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      sx={{ flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'center' } }}
-    >
-      <Typography mt={2} variant="h2">
-        Mediporta
-      </Typography>
-      {status !== Status.SUCCEEDED && <Button label="fetch tags" variant="contained" onClick={onClick} />}
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar color="transparent" position="static">
+        <Toolbar sx={{ py: 2, px: 4, width: '100%', maxWidth: '600px', mx: 'auto' }}>
+          <img src={logo} alt="logo" width="100px" />
+          <Box ml="auto">
+            {status !== Status.SUCCEEDED && <Button label="fetch tags" variant="contained" onClick={onClick} />}
+          </Box>
+        </Toolbar>
+      </AppBar>
     </Box>
   );
 };

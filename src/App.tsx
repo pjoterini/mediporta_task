@@ -1,13 +1,27 @@
-import { Container } from '@mui/material';
+import { Container, CssBaseline } from '@mui/material';
 import TableContainer from './components/Table/Table.container';
 import HeaderContainer from './components/Header/Header.container';
+import { ThemeProvider, createTheme } from '@mui/material';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#f6d15c',
+    },
+  },
+});
 
 function App() {
   return (
-    <Container>
-      <HeaderContainer />
-      <TableContainer />
-    </Container>
+    <>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <HeaderContainer />
+        <Container>
+          <TableContainer />
+        </Container>
+      </ThemeProvider>
+    </>
   );
 }
 

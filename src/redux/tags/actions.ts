@@ -1,34 +1,29 @@
+import { GridSortDirection } from '@mui/x-data-grid';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-export const fetchTags = createAsyncThunk('tags/fetchTags', async (amount: number, thunkAPI) => {
-  try {
-    let numberOfPages = 1;
-    if (amount > 99) {
-      numberOfPages = Math.floor(amount / 100);
-    }
+interface FetchTagsPayload {
+  page: number;
+  pageSize: number;
+  sortBy?: string;
+  order?: GridSortDirection;
+}
 
-    let items = [];
-    let currentPage = 1;
-    let hasMore = true;
+export const fetchTags = createAsyncThunk('tags/fetchTags', async (payload: FetchTagsPayload) => {
+  const { page, pageSize, sortBy, order } = payload;
+  const params = new URLSearchParams();
+  params.append('page', page.toString());
+  params.append('pagesize', pageSize.toString());
+  if (order) params.append('order', order);
+  if (sortBy) params.append('sort', sortBy);
 
-    while (hasMore && currentPage <= numberOfPages) {
-      const result = await fetch(
-        `https://api.stackexchange.com/2.3/tags?page=${currentPage}&pagesize=100&order=desc&sort=popular&site=stackoverflow`,
-      );
-      const data = await result.json();
-      console.log(data);
+  return axios
+    .get(`https://api.stackexchange.com/2.3/tags?site=stackoverflow&${params.toString()}`)
+    .then((res) => res.data.items);
+});
 
-      items.push(...data.items);
-      if (data.has_more) {
-        currentPage++;
-      } else {
-        hasMore = false;
-      }
-    }
-
-    return items;
-  } catch (err) {
-    console.error(err);
-    return thunkAPI.rejectWithValue(err);
-  }
+export const fetchTagsCount = createAsyncThunk('tags/fetchTagsCount', async () => {
+  return axios
+    .get('https://api.stackexchange.com/2.3/tags?site=stackoverflow&filter=tota')
+    .then((res) => res.data.total);
 });

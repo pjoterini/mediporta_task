@@ -7,7 +7,9 @@ interface IProps {
 const StateFailed = ({ error }: IProps) => {
   return (
     <Box p={2} display="flex" justifyContent="center" alignItems="center">
-      <Typography color="error">{error}</Typography>
+      <Typography textAlign="center" color="error">
+        {error}
+      </Typography>
     </Box>
   );
 };

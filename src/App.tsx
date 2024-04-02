@@ -1,5 +1,5 @@
 import { Container, CssBaseline } from '@mui/material';
-import TableContainer from './components/Table/Table.container';
+import TableContainer from './components/TagsTable/TagsTable.container';
 import HeaderContainer from './components/Header/Header.container';
 import { ThemeProvider, createTheme } from '@mui/material';
 

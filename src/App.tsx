@@ -6,7 +6,7 @@ import Footer from './common/layout/Footer';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#f6d15c',
+      main: '#edc10e',
     },
     secondary: {
       main: '#104564',

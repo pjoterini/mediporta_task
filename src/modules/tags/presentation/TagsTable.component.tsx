@@ -1,15 +1,15 @@
-import { Box, TextField, Link } from '@mui/material';
-import { DataGrid, GridColDef, GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
+import { Box, Link } from '@mui/material';
+import { GridColDef, GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
 import { useMemo } from 'react';
-import { Status, Tag } from '../types';
-import StateLoading from '../../../components/common/StateLoading';
-import StateFailed from '../../../components/common/StateFailed';
+import { Tag } from '../types';
+import { Status } from '../../../common/enums';
+import { Table } from '../../../common/components';
 
 interface TagsTableProps {
-  tagsCount?: number;
-  tags?: Tag[];
+  tagCount: number | null;
+  tags: Tag[];
   status: Status;
-  error?: string;
+  error: string | null;
   paginationModel: GridPaginationModel;
   setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>;
   sortModel: GridSortModel;
@@ -17,7 +17,7 @@ interface TagsTableProps {
 }
 
 const TagsTable = ({
-  tagsCount,
+  tagCount,
   tags,
   status,
   error,
@@ -55,31 +55,19 @@ const TagsTable = ({
   );
 
   return (
-    <Box my={2} mx="auto" maxWidth="550px">
-      <TextField
-        value={paginationModel.pageSize}
-        InputProps={{ inputProps: { min: 10, max: 100 } }}
-        onChange={(v) => setPaginationModel((prev) => ({ ...prev, pageSize: +v.currentTarget.value }))}
+    <Box my={4} mx="auto" maxWidth="550px">
+      <Table
+        heading="Tags List"
+        rows={tags}
+        columns={columns}
+        rowCount={tagCount}
+        status={status}
+        error={error}
+        paginationModel={paginationModel}
+        setPaginationModel={setPaginationModel}
+        sortModel={sortModel}
+        setSortModel={setSortModel}
       />
-      {status === Status.LOADING && <StateLoading />}
-      {error && <StateFailed error={error} />}
-      {status === Status.SUCCEEDED && tags && tagsCount && (
-        <DataGrid
-          rows={tags}
-          columns={columns}
-          getRowId={(row) => row.name}
-          rowCount={tagsCount}
-          pagination
-          sortingMode="server"
-          filterMode="server"
-          paginationMode="server"
-          paginationModel={paginationModel}
-          onPaginationModelChange={setPaginationModel}
-          sortModel={sortModel}
-          onSortModelChange={setSortModel}
-          pageSizeOptions={[paginationModel.pageSize]}
-        />
-      )}
     </Box>
   );
 };

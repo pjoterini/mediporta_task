@@ -1,7 +1,7 @@
-import { Container, CssBaseline } from '@mui/material';
-import TableContainer from './components/TagsTable/TagsTable.container';
-import HeaderContainer from './components/Header/Header.container';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { Header } from './common/layout';
+import { TagsTableContainer } from './modules/tags';
+import Footer from './common/layout/Footer';
 
 const theme = createTheme({
   palette: {
@@ -19,10 +19,11 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <HeaderContainer />
+        <Header />
         <Container>
-          <TableContainer />
+          <TagsTableContainer />
         </Container>
+        <Footer />
       </ThemeProvider>
     </>
   );

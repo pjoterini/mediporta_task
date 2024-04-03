@@ -1,1 +1,1 @@
-export { fetchTags, fetchTagsCount } from './getTagsData';
+export { fetchTags, fetchTagCount } from './getTagsData';

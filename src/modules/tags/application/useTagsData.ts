@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { fetchTags, fetchTagsCount } from '../infrastracture/';
+import { fetchTags, fetchTagCount } from '../infrastracture';
 import { FetchTagsPayload } from '../types';
 import { RootState, useAppDispatch, useAppSelector } from '../../../store';
 
 export const useTagsData = () => {
-  const tagsCount = useAppSelector((state: RootState) => state.tags.tagsCount);
-  const tags = useAppSelector((state: RootState) => state.tags.tags);
+  const tagCount = useAppSelector((state: RootState) => state.tags.count);
+  const tags = useAppSelector((state: RootState) => state.tags.data);
   const status = useAppSelector((state: RootState) => state.tags.status);
   const error = useAppSelector((state: RootState) => state.tags.error);
 
@@ -16,8 +16,8 @@ export const useTagsData = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchTagsCount);
+    dispatch(fetchTagCount());
   }, []);
 
-  return { tagsCount, tags, status, error, fetchTagsData };
+  return { tagCount, tags, status, error, fetchTagsData };
 };

@@ -4,7 +4,7 @@ import TagsTable from './TagsTable.component';
 import { useTagsData } from '../application';
 
 const TagsTableContainer = () => {
-  const { tagsCount, tags, status, error, fetchTagsData } = useTagsData();
+  const { tagCount, tags, status, error, fetchTagsData } = useTagsData();
 
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'popular', sort: 'desc' }]);
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
@@ -21,7 +21,7 @@ const TagsTableContainer = () => {
 
   return (
     <TagsTable
-      tagsCount={tagsCount}
+      tagCount={tagCount}
       tags={tags}
       status={status}
       error={error}

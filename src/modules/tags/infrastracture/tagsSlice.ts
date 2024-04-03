@@ -1,22 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Status, Tag } from '../types';
-import { fetchTags, fetchTagsCount } from './getTagsData';
+import { Tag } from '../types';
+import { fetchTags, fetchTagCount } from './getTagsData';
+import { Status } from '../../../common/enums';
 
 interface TagsStateProps {
-  tagsCount?: number;
-  tags?: Tag[];
+  count: number | null;
+  data: Tag[];
   status: Status;
-  error?: string;
+  error: string | null;
 }
 
 const initialState: TagsStateProps = {
-  tagsCount: undefined,
-  tags: [],
+  count: null,
+  data: [],
   status: Status.IDLE,
-  error: undefined,
+  error: null,
 };
 
-export const tagsSlice = createSlice({
+const tagsSlice = createSlice({
   name: 'tags',
   initialState,
   reducers: {},
@@ -27,18 +28,18 @@ export const tagsSlice = createSlice({
       })
       .addCase(fetchTags.rejected, (state, { error }) => {
         state.status = Status.FAILED;
-        state.error = error.message;
+        state.error = error.message || null;
       })
       .addCase(fetchTags.fulfilled, (state, { payload }) => {
         state.status = Status.SUCCEEDED;
-        state.tags = payload;
+        state.data = payload;
       })
-      .addCase(fetchTagsCount.rejected, (state, { error }) => {
+      .addCase(fetchTagCount.rejected, (state, { error }) => {
         state.error = `Could not fetch tags count. Count set to default. ${error.message}`;
-        state.tagsCount = 100;
+        state.count = 100;
       })
-      .addCase(fetchTagsCount.fulfilled, (state, { payload }) => {
-        state.tagsCount = payload;
+      .addCase(fetchTagCount.fulfilled, (state, { payload }) => {
+        state.count = payload;
       });
   },
 });

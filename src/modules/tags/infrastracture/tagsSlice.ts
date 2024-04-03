@@ -1,20 +1,17 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Status } from '../enums/status';
-import { fetchTags, fetchTagsCount } from './actions';
-import { ITag } from './interfaces';
+import { createSlice } from '@reduxjs/toolkit';
+import { Status, Tag } from '../types';
+import { fetchTags, fetchTagsCount } from './getTagsData';
 
-interface IProps {
-  tags: ITag[];
+interface TagsStateProps {
   tagsCount?: number;
-  amount?: number;
+  tags?: Tag[];
   status: Status;
-  error: undefined | string;
+  error?: string;
 }
 
-const initialState: IProps = {
-  tags: [],
+const initialState: TagsStateProps = {
   tagsCount: undefined,
-  amount: undefined,
+  tags: [],
   status: Status.IDLE,
   error: undefined,
 };
@@ -22,11 +19,7 @@ const initialState: IProps = {
 export const tagsSlice = createSlice({
   name: 'tags',
   initialState,
-  reducers: {
-    setAmountAction: (state: IProps, action: PayloadAction<number>) => {
-      state.amount = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchTags.pending, (state) => {
@@ -41,7 +34,6 @@ export const tagsSlice = createSlice({
         state.tags = payload;
       })
       .addCase(fetchTagsCount.rejected, (state, { error }) => {
-        console.log(error);
         state.error = `Could not fetch tags count. Count set to default. ${error.message}`;
         state.tagsCount = 100;
       })
@@ -50,7 +42,5 @@ export const tagsSlice = createSlice({
       });
   },
 });
-
-export const { setAmountAction } = tagsSlice.actions;
 
 export default tagsSlice.reducer;

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import tagsReducer from './tags/reducer';
+import tagsReducer from './modules/tags/infrastracture/tagsSlice';
 
 export const store = configureStore({
   reducer: {

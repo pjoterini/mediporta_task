@@ -1,13 +1,6 @@
-import { GridSortDirection } from '@mui/x-data-grid';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-interface FetchTagsPayload {
-  page: number;
-  pageSize: number;
-  sortBy?: string;
-  order?: GridSortDirection;
-}
+import { FetchTagsPayload } from '../types';
 
 export const fetchTags = createAsyncThunk('tags/fetchTags', async (payload: FetchTagsPayload) => {
   const { page, pageSize, sortBy, order } = payload;
@@ -24,6 +17,6 @@ export const fetchTags = createAsyncThunk('tags/fetchTags', async (payload: Fetc
 
 export const fetchTagsCount = createAsyncThunk('tags/fetchTagsCount', async () => {
   return axios
-    .get('https://api.stackexchange.com/2.3/tags?site=stackoverflow&filter=tota')
+    .get('https://api.stackexchange.com/2.3/tags?site=stackoverflow&filter=total')
     .then((res) => res.data.total);
 });

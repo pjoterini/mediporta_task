@@ -1,0 +1,1 @@
+export { useTagsData } from './useTagsData';

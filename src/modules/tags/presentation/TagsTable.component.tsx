@@ -1,14 +1,13 @@
-import { Box, Link } from '@mui/material';
+import { Box, TextField, Link } from '@mui/material';
 import { DataGrid, GridColDef, GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
 import { useMemo } from 'react';
-import { Status } from '../../redux/enums/status';
-import { ITag } from '../../redux/tags/interfaces';
-import StateFailed from '../common/StateFailed';
-import StateLoading from '../common/StateLoading';
+import { Status, Tag } from '../types';
+import StateLoading from '../../../components/common/StateLoading';
+import StateFailed from '../../../components/common/StateFailed';
 
 interface TagsTableProps {
   tagsCount?: number;
-  tags?: ITag[];
+  tags?: Tag[];
   status: Status;
   error?: string;
   paginationModel: GridPaginationModel;
@@ -27,7 +26,7 @@ const TagsTable = ({
   sortModel,
   setSortModel,
 }: TagsTableProps) => {
-  const columns: GridColDef<ITag>[] = useMemo(
+  const columns: GridColDef<Tag>[] = useMemo(
     () => [
       {
         field: 'name',
@@ -57,6 +56,11 @@ const TagsTable = ({
 
   return (
     <Box my={2} mx="auto" maxWidth="550px">
+      <TextField
+        value={paginationModel.pageSize}
+        InputProps={{ inputProps: { min: 10, max: 100 } }}
+        onChange={(v) => setPaginationModel((prev) => ({ ...prev, pageSize: +v.currentTarget.value }))}
+      />
       {status === Status.LOADING && <StateLoading />}
       {error && <StateFailed error={error} />}
       {status === Status.SUCCEEDED && tags && tagsCount && (
@@ -73,7 +77,7 @@ const TagsTable = ({
           onPaginationModelChange={setPaginationModel}
           sortModel={sortModel}
           onSortModelChange={setSortModel}
-          pageSizeOptions={[10, 20, 50, 100]}
+          pageSizeOptions={[paginationModel.pageSize]}
         />
       )}
     </Box>

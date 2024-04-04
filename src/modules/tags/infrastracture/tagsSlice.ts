@@ -33,6 +33,7 @@ const tagsSlice = createSlice({
       .addCase(fetchTags.fulfilled, (state, { payload }) => {
         state.status = Status.SUCCEEDED;
         state.data = payload;
+        state.error = null;
       })
       .addCase(fetchTagCount.rejected, (state, { error }) => {
         state.error = `Could not fetch tags count. Count set to default. ${error.message}`;
@@ -40,6 +41,7 @@ const tagsSlice = createSlice({
       })
       .addCase(fetchTagCount.fulfilled, (state, { payload }) => {
         state.count = payload;
+        state.error = null;
       });
   },
 });

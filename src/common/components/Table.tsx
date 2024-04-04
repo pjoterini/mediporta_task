@@ -37,7 +37,7 @@ const Table = ({
         <Typography pr={2} variant="h4">
           {heading}
         </Typography>
-        <PaginationInput paginationModel={paginationModel} setPaginationModel={setPaginationModel} />
+        <PaginationInput setPaginationModel={setPaginationModel} />
       </Box>
       {status === Status.LOADING && <StateLoading />}
       {status === Status.SUCCEEDED && rows && rowCount && (

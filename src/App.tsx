@@ -1,7 +1,6 @@
 import { Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { Header } from './common/layout';
 import { TagsTableContainer } from './modules/tags';
-import Footer from './common/layout/Footer';
 
 const theme = createTheme({
   palette: {
@@ -23,7 +22,6 @@ function App() {
         <Container>
           <TagsTableContainer />
         </Container>
-        <Footer />
       </ThemeProvider>
     </>
   );
